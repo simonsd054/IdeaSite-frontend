@@ -30,18 +30,17 @@ export default function Navbar() {
     <NavigationMenu className="bg-slate-200 max-w-full justify-between p-3">
       <NavigationMenuList className="flex gap-5">
         <NavigationMenuItem>
-          <Link href="/" legacyBehavior passHref>
-            <NavigationMenuLink className="text-slate-800 text-lg hover:text-slate-600">
-              Logo
-            </NavigationMenuLink>
+          <Link to="/" className="text-slate-800 text-lg hover:text-slate-600">
+            Logo
           </Link>
         </NavigationMenuItem>
         {navbarItems.map((item) => (
-          <NavigationMenuItem>
-            <Link to={item.linkTo}>
-              <NavigationMenuLink className="text-slate-800 text-lg hover:text-slate-600">
-                {item.content}
-              </NavigationMenuLink>
+          <NavigationMenuItem key={item.content}>
+            <Link
+              to={item.linkTo}
+              className="text-slate-800 text-lg hover:text-slate-600"
+            >
+              {item.content}
             </Link>
           </NavigationMenuItem>
         ))}
@@ -54,8 +53,12 @@ export default function Navbar() {
           </Avatar>
         </DropdownMenuTrigger>
         <DropdownMenuContent>
-          <DropdownMenuItem className="cursor-pointer">Profile</DropdownMenuItem>
-          <DropdownMenuItem className="cursor-pointer">Settings</DropdownMenuItem>
+          <DropdownMenuItem className="cursor-pointer">
+            Profile
+          </DropdownMenuItem>
+          <DropdownMenuItem className="cursor-pointer">
+            Settings
+          </DropdownMenuItem>
           <DropdownMenuItem className="cursor-pointer">Logout</DropdownMenuItem>
         </DropdownMenuContent>
       </DropdownMenu>
