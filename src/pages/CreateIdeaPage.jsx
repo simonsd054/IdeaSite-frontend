@@ -1,7 +1,9 @@
-import React from 'react'
+import IdeaForm from "@/components/custom/IdeaForm"
 
 export default function CreateIdeaPage() {
-  return (
-    <div>CreateIdeaPage</div>
-  )
+  const onSubmit = (values) => {
+    console.log(values)
+  }
+
+  return <IdeaForm onSubmit={onSubmit} />
 }
