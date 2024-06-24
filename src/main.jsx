@@ -9,6 +9,7 @@ import "./index.css"
 import ErrorPage from "./pages/ErrorPage.jsx"
 import CreateIdeaPage from "./pages/CreateIdeaPage.jsx"
 import HomePage from "./pages/HomePage.jsx"
+import Registration from "./pages/Registration.jsx"
 
 const queryClient = new QueryClient()
 
@@ -18,6 +19,10 @@ const router = createBrowserRouter([
     element: <App />,
     // errorElement: <ErrorPage />,
     children: [
+      {
+        path: "/register",
+        element: <Registration />,
+      },
       {
         path: "/ideas/create",
         element: <CreateIdeaPage />,
@@ -32,9 +37,9 @@ const router = createBrowserRouter([
 
 ReactDOM.createRoot(document.getElementById("root")).render(
   <React.StrictMode>
-  <QueryClientProvider client={queryClient}>
-    <RouterProvider router={router} />
-    <ReactQueryDevtools />
-  </QueryClientProvider>
+    <QueryClientProvider client={queryClient}>
+      <RouterProvider router={router} />
+      <ReactQueryDevtools />
+    </QueryClientProvider>
   </React.StrictMode>
 )
