@@ -1,9 +1,29 @@
+import { useNavigate } from "react-router"
 import { useForm } from "react-hook-form"
+import { useMutation } from "@tanstack/react-query"
 
 import { Button } from "@/components/ui/button"
 import FormInput from "@/components/custom/FormInput"
+import { useToast } from "@/components/ui/use-toast"
+
+import { graphqlError } from "@/utils/error"
+import { loginUser } from "@/apis/user"
+import { useGlobalContext } from "@/utils/reducer"
+import { graphQLClient } from "@/apis/common"
 
 export default function Login() {
+  const { dispatch } = useGlobalContext()
+
+  const userMutation = useMutation({
+    mutationFn: (variables) => {
+      return loginUser(variables)
+    },
+  })
+
+  const { toast } = useToast()
+
+  const navigate = useNavigate()
+
   const {
     register,
     handleSubmit,
@@ -15,8 +35,31 @@ export default function Login() {
     },
   })
 
-  const onSubmit = (values) => {
-    console.log(values)
+  const onSubmit = async (values) => {
+    try {
+      const loginResp = await userMutation.mutateAsync(values)
+      const errors = graphqlError(loginResp)
+      if (errors) {
+        toast({
+          title: errors,
+        })
+      } else {
+        const token = loginResp?.data?.login?.token
+        toast({
+          title: "Login Successful",
+        })
+        dispatch({
+          type: "setToken",
+          data: token,
+        })
+        graphQLClient.setHeader("authorization", `Bearer ${token}`)
+        navigate("/")
+      }
+    } catch (err) {
+      toast({
+        title: "Something went wrong!",
+      })
+    }
   }
 
   return (
@@ -51,7 +94,9 @@ export default function Login() {
           type="password"
         />
 
-        <Button type="submit">Login</Button>
+        <Button disabled={isSubmitting} type="submit">
+          Login
+        </Button>
       </form>
     </div>
   )

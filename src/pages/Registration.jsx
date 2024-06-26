@@ -1,4 +1,6 @@
+import { useNavigate } from "react-router"
 import { useForm } from "react-hook-form"
+import { useMutation } from "@tanstack/react-query"
 
 import { Button } from "@/components/ui/button"
 import { Label } from "@/components/ui/label"
@@ -12,8 +14,26 @@ import {
   SelectValue,
 } from "@/components/ui/select"
 import FormInput from "@/components/custom/FormInput"
+import { useToast } from "@/components/ui/use-toast"
+
+import { registerUser } from "@/apis/user"
+import { graphqlError } from "@/utils/error"
+import { useGlobalContext } from "@/utils/reducer"
+import { graphQLClient } from "@/apis/common"
 
 export default function Registration() {
+  const { dispatch } = useGlobalContext()
+
+  const userMutation = useMutation({
+    mutationFn: (variables) => {
+      return registerUser(variables)
+    },
+  })
+
+  const { toast } = useToast()
+
+  const navigate = useNavigate()
+
   const {
     register,
     handleSubmit,
@@ -32,10 +52,37 @@ export default function Registration() {
     },
   })
 
-  const { ref: genderRegisterRef, ...genderRegisterRest } = register("gender")
+  const {
+    ref: genderRegisterRef,
+    onChange: onGenderChange,
+    ...genderRegisterRest
+  } = register("gender")
 
   const onSubmit = async (values) => {
-    console.log(values)
+    try {
+      const registerResp = await userMutation.mutateAsync(values)
+      const errors = graphqlError(registerResp)
+      if (errors) {
+        toast({
+          title: errors,
+        })
+      } else {
+        const token = registerResp?.data?.register?.token
+        toast({
+          title: "Registration Successful",
+        })
+        dispatch({
+          type: "setToken",
+          data: token,
+        })
+        graphQLClient.setHeader("authorization", `Bearer ${token}`)
+        navigate("/")
+      }
+    } catch (err) {
+      toast({
+        title: "Something went wrong!",
+      })
+    }
   }
 
   return (
@@ -114,7 +161,13 @@ export default function Registration() {
 
         <div className="space-y-2 mb-7">
           <Label className={`${errors.gender && "text-red-700"}`}>Gender</Label>
-          <Select {...genderRegisterRest} defaultValue={getValues("gender")}>
+          <Select
+            {...genderRegisterRest}
+            defaultValue={getValues("gender")}
+            onValueChange={(value) => {
+              onGenderChange({ target: { name: "gender", value } })
+            }}
+          >
             <SelectTrigger className="w-[180px]">
               <SelectValue placeholder="Select a gender" />
             </SelectTrigger>
@@ -139,6 +192,7 @@ export default function Registration() {
             required: "Phone is required",
           }}
           errors={errors}
+          type="number"
         />
 
         <Button disabled={isSubmitting} type="submit">

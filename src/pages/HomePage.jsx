@@ -1,11 +1,13 @@
 import { useQuery } from "@tanstack/react-query"
 import { gql } from "graphql-request"
+import { Loader2 } from "lucide-react"
 
 import Idea from "@/components/custom/Idea"
 import { getIdeas } from "@/apis/idea"
-import { Loader2 } from "lucide-react"
+import { useToast } from "@/components/ui/use-toast"
 
 export default function HomePage() {
+  const { toast } = useToast()
   const { data, isLoading } = useQuery({
     queryKey: ["ideas"],
     queryFn: () => {
@@ -22,7 +24,8 @@ export default function HomePage() {
               }
             }
           }
-        `
+        `,
+        toast
       )
     },
   })
@@ -32,7 +35,7 @@ export default function HomePage() {
       {isLoading ? (
         <Loader2 />
       ) : (
-        data.ideas.map((idea) => <Idea key={idea.id} idea={idea} />)
+        data?.data?.ideas?.map((idea) => <Idea key={idea.id} idea={idea} />)
       )}
     </div>
   )
