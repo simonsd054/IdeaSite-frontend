@@ -3,17 +3,9 @@ import { useForm } from "react-hook-form"
 import { useMutation } from "@tanstack/react-query"
 
 import { Button } from "@/components/ui/button"
-import { Label } from "@/components/ui/label"
-import {
-  Select,
-  SelectContent,
-  SelectGroup,
-  SelectItem,
-  SelectLabel,
-  SelectTrigger,
-  SelectValue,
-} from "@/components/ui/select"
-import FormInput from "@/components/custom/FormInput"
+
+import FormInput from "@/components/custom/form/FormInput"
+import FormSelect from "@/components/custom/form/FormSelect"
 import { useToast } from "@/components/ui/use-toast"
 
 import { registerUser } from "@/apis/user"
@@ -159,28 +151,30 @@ export default function Registration() {
           errors={errors}
         />
 
-        <div className="space-y-2 mb-7">
-          <Label className={`${errors.gender && "text-red-700"}`}>Gender</Label>
-          <Select
-            {...genderRegisterRest}
-            defaultValue={getValues("gender")}
-            onValueChange={(value) => {
-              onGenderChange({ target: { name: "gender", value } })
-            }}
-          >
-            <SelectTrigger className="w-[180px]">
-              <SelectValue placeholder="Select a gender" />
-            </SelectTrigger>
-            <SelectContent>
-              <SelectGroup>
-                <SelectLabel>Select a gender</SelectLabel>
-                <SelectItem value="male">Male</SelectItem>
-                <SelectItem value="female">Female</SelectItem>
-                <SelectItem value="Others">Others</SelectItem>
-              </SelectGroup>
-            </SelectContent>
-          </Select>
-        </div>
+        <FormSelect
+          id="gender"
+          registerName="gender"
+          label="Gender"
+          placeholder="Select a gender"
+          errors={errors}
+          registerRest={genderRegisterRest}
+          onChange={onGenderChange}
+          getValues={getValues}
+          selectValues={[
+            {
+              label: "Male",
+              value: "male",
+            },
+            {
+              label: "Female",
+              value: "female",
+            },
+            {
+              label: "Others",
+              value: "others",
+            },
+          ]}
+        />
 
         <FormInput
           id="phone"

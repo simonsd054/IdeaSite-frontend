@@ -3,7 +3,7 @@ import { useForm } from "react-hook-form"
 import { useMutation } from "@tanstack/react-query"
 
 import { Button } from "@/components/ui/button"
-import FormInput from "@/components/custom/FormInput"
+import FormInput from "@/components/custom/form/FormInput"
 import { useToast } from "@/components/ui/use-toast"
 
 import { graphqlError } from "@/utils/error"
