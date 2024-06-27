@@ -12,8 +12,9 @@ import {
   DropdownMenuItem,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu"
+import { useGlobalContext } from "@/utils/reducer"
 
-const navbarItems = [
+const navbarItemsLoggedIn = [
   {
     content: "Home",
     linkTo: "/",
@@ -24,7 +25,26 @@ const navbarItems = [
   },
 ]
 
+const navbarItemsNotLoggedIn = [
+  {
+    content: "Register",
+    linkTo: "/register",
+  },
+  { content: "Login", linkTo: "/login" },
+]
+
 export default function Navbar() {
+  const { store, dispatch } = useGlobalContext()
+
+  const navbarItems = store.token ? navbarItemsLoggedIn : navbarItemsNotLoggedIn
+
+  const onClickLogout = () => {
+    dispatch({
+      type: "setToken",
+      data: null,
+    })
+  }
+
   return (
     <NavigationMenu className="bg-slate-200 max-w-full justify-between p-3">
       <NavigationMenuList className="flex gap-5">
@@ -58,7 +78,9 @@ export default function Navbar() {
           <DropdownMenuItem className="cursor-pointer">
             Settings
           </DropdownMenuItem>
-          <DropdownMenuItem className="cursor-pointer">Logout</DropdownMenuItem>
+          <DropdownMenuItem className="cursor-pointer" onClick={onClickLogout}>
+            Logout
+          </DropdownMenuItem>
         </DropdownMenuContent>
       </DropdownMenu>
     </NavigationMenu>
