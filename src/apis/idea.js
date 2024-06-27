@@ -1,3 +1,5 @@
+import { gql } from "graphql-request"
+
 import { graphqlError } from "@/utils/error"
 import { graphQLClient } from "./common"
 
@@ -12,4 +14,20 @@ const getIdeas = async (query, toast) => {
   return response
 }
 
-export { getIdeas }
+const createIdea = async (variables) => {
+  const query = gql`
+    mutation CreateIdea($title: String!, $body: String!) {
+      createIdea(title: $title, body: $body) {
+        id
+        title
+        body
+        user {
+          name
+        }
+      }
+    }
+  `
+  return await graphQLClient.rawRequest(query, variables)
+}
+
+export { getIdeas, createIdea }

@@ -8,7 +8,7 @@ import { useToast } from "@/components/ui/use-toast"
 
 export default function HomePage() {
   const { toast } = useToast()
-  const { data, isLoading } = useQuery({
+  const { data, isPending, isSuccess } = useQuery({
     queryKey: ["ideas"],
     queryFn: () => {
       return getIdeas(
@@ -32,7 +32,7 @@ export default function HomePage() {
 
   return (
     <div className="flex flex-col items-center gap-5">
-      {isLoading ? (
+      {isPending ? (
         <Loader2 />
       ) : (
         data?.data?.ideas?.map((idea) => <Idea key={idea.id} idea={idea} />)
