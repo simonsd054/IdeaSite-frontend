@@ -5,19 +5,19 @@ import { graphQLClient } from "./common"
 
 const getIdeas = async (_, toast, queryName) => {
   const query = gql`
-  {
-    ${queryName} {
-      id
-      title
-      body
-      createdAt
-      user {
+    {
+      ${queryName} {
         id
-        name
+        title
+        body
+        createdAt
+        user {
+          id
+          name
+        }
       }
     }
-  }
-`
+  `
   const response = await graphQLClient.rawRequest(query)
   const errors = graphqlError(response)
   if (errors) {
