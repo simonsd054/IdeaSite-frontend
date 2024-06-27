@@ -12,6 +12,13 @@ function globalReducer(state, action) {
         token: action.data,
       }
     }
+    case "setUser": {
+      localStorage.setItem("user", JSON.stringify(action.data) || "")
+      return {
+        ...state,
+        user: action.data,
+      }
+    }
     default:
       return state
   }

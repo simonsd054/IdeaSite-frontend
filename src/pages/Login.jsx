@@ -44,13 +44,19 @@ export default function Login() {
           title: errors,
         })
       } else {
-        const token = loginResp?.data?.login?.token
+        const loginData = loginResp?.data?.login
+        const token = loginData?.token
+        const user = loginData?.user
         toast({
           title: "Login Successful",
         })
         dispatch({
           type: "setToken",
           data: token,
+        })
+        dispatch({
+          type: "setUser",
+          data: user,
         })
         graphQLClient.setHeader("authorization", `Bearer ${token}`)
         navigate("/")

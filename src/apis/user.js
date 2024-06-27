@@ -23,6 +23,10 @@ const registerUser = async (variables) => {
         phone: $phone
       ) {
         token
+        user {
+          id
+          name
+        }
       }
     }
   `
@@ -34,6 +38,10 @@ const loginUser = async (variables) => {
     mutation LoginUser($email: String!, $password: String!) {
       login(email: $email, password: $password) {
         token
+        user {
+          id
+          name
+        }
       }
     }
   `

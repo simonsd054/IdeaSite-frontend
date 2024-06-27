@@ -20,7 +20,7 @@ const navbarItemsLoggedIn = [
     linkTo: "/",
   },
   {
-    content: "Create Idea",
+    content: "Post Idea",
     linkTo: "/ideas/create",
   },
 ]
@@ -43,7 +43,13 @@ export default function Navbar() {
       type: "setToken",
       data: null,
     })
+    dispatch({
+      type: "setUser",
+      data: {},
+    })
   }
+
+  const splittedUserName = store?.user?.name?.split(" ")
 
   return (
     <NavigationMenu className="bg-slate-200 max-w-full justify-between p-3">
@@ -64,25 +70,31 @@ export default function Navbar() {
           </NavigationMenuItem>
         ))}
       </NavigationMenuList>
-      <DropdownMenu>
-        <DropdownMenuTrigger className="outline-none">
-          <Avatar className="cursor-pointer">
-            <AvatarImage src="<avatar-image-link>" alt="avatar" />
-            <AvatarFallback>CN</AvatarFallback>
-          </Avatar>
-        </DropdownMenuTrigger>
-        <DropdownMenuContent>
-          <DropdownMenuItem className="cursor-pointer">
-            Profile
-          </DropdownMenuItem>
-          <DropdownMenuItem className="cursor-pointer">
-            Settings
-          </DropdownMenuItem>
-          <DropdownMenuItem className="cursor-pointer" onClick={onClickLogout}>
-            Logout
-          </DropdownMenuItem>
-        </DropdownMenuContent>
-      </DropdownMenu>
+      {store.token && (
+        <DropdownMenu>
+          <DropdownMenuTrigger className="outline-none">
+            <Avatar className="cursor-pointer">
+              <AvatarImage src="<avatar-image-link>" alt="avatar" />
+              <AvatarFallback>
+                {splittedUserName?.map((name) => name?.[0])}
+              </AvatarFallback>
+            </Avatar>
+          </DropdownMenuTrigger>
+          <DropdownMenuContent>
+            <Link to="my-ideas">
+              <DropdownMenuItem className="cursor-pointer">
+                My Ideas
+              </DropdownMenuItem>
+            </Link>
+            <DropdownMenuItem
+              className="cursor-pointer"
+              onClick={onClickLogout}
+            >
+              Logout
+            </DropdownMenuItem>
+          </DropdownMenuContent>
+        </DropdownMenu>
+      )}
     </NavigationMenu>
   )
 }

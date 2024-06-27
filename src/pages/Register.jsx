@@ -13,7 +13,7 @@ import { graphqlError } from "@/utils/error"
 import { useGlobalContext } from "@/utils/reducer"
 import { graphQLClient } from "@/apis/common"
 
-export default function Registration() {
+export default function Register() {
   const { dispatch } = useGlobalContext()
 
   const userMutation = useMutation({
@@ -59,13 +59,19 @@ export default function Registration() {
           title: errors,
         })
       } else {
-        const token = registerResp?.data?.register?.token
+        const registerData = registerResp?.data?.register
+        const token = registerData?.token
+        const user = registerData?.user
         toast({
           title: "Registration Successful",
         })
         dispatch({
           type: "setToken",
           data: token,
+        })
+        dispatch({
+          type: "setUser",
+          data: user,
         })
         graphQLClient.setHeader("authorization", `Bearer ${token}`)
         navigate("/")

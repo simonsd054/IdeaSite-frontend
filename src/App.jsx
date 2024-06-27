@@ -7,11 +7,18 @@ import { Toaster } from "@/components/ui/toaster"
 
 import Navbar from "@/components/custom/Navbar"
 import { GlobalContext, globalReducer } from "./utils/reducer.js"
-import { Registration, CreateIdeaPage, HomePage, Login } from "./pages"
+import {
+  Register,
+  CreateIdeaPage,
+  HomePage,
+  Login,
+  MyIdeasPage,
+} from "./pages"
 import ProtectedRoute from "./components/custom/ProtectedRoute.jsx"
 
 const initialState = {
   token: localStorage.getItem("token") ?? "",
+  user: JSON.parse(localStorage.getItem("user")) ?? "",
 }
 
 const router = createBrowserRouter([
@@ -22,7 +29,7 @@ const router = createBrowserRouter([
     children: [
       {
         path: "/register",
-        element: <Registration />,
+        element: <Register />,
       },
       {
         path: "/login",
@@ -35,6 +42,10 @@ const router = createBrowserRouter([
           {
             path: "/ideas/create",
             element: <CreateIdeaPage />,
+          },
+          {
+            path: "/my-ideas",
+            element: <MyIdeasPage />,
           },
           {
             path: "/",
