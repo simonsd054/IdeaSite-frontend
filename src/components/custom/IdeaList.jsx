@@ -3,8 +3,9 @@ import { gql } from "graphql-request"
 import { Loader2 } from "lucide-react"
 
 import Idea from "@/components/custom/Idea"
-import { getIdeas } from "@/apis/idea"
 import { useToast } from "@/components/ui/use-toast"
+
+import { getIdeas } from "@/apis/idea"
 
 export default function IdeaList({ queryKey, queryName }) {
   const { toast } = useToast()
@@ -20,6 +21,7 @@ export default function IdeaList({ queryKey, queryName }) {
               body
               createdAt
               user {
+                id
                 name
               }
             }

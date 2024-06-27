@@ -8,7 +8,7 @@ import { graphqlError } from "@/utils/error"
 import { useNavigate } from "react-router"
 
 export default function CreateIdeaPage() {
-  const ideaMutation = useMutation({
+  const createIdeaMutation = useMutation({
     mutationFn: (variables) => {
       return createIdea(variables)
     },
@@ -20,7 +20,7 @@ export default function CreateIdeaPage() {
 
   const onSubmit = async (values) => {
     try {
-      const createIdeaResp = await ideaMutation.mutateAsync(values)
+      const createIdeaResp = await createIdeaMutation.mutateAsync(values)
       const errors = graphqlError(createIdeaResp)
       if (errors) {
         toast({

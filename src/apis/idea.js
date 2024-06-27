@@ -30,4 +30,16 @@ const createIdea = async (variables) => {
   return await graphQLClient.rawRequest(query, variables)
 }
 
-export { getIdeas, createIdea }
+const deleteIdea = async (variables) => {
+  const query = gql`
+    mutation DeleteIdea($id: ID!) {
+      deleteIdea(id: $id) {
+        id
+        title
+      }
+    }
+  `
+  return await graphQLClient.rawRequest(query, variables)
+}
+
+export { getIdeas, createIdea, deleteIdea }
