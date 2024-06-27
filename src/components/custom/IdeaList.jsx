@@ -9,26 +9,10 @@ import { getIdeas } from "@/apis/idea"
 
 export default function IdeaList({ queryKey, queryName }) {
   const { toast } = useToast()
-  const { data, isPending } = useQuery({
+  const { data, isPending, isSuccess } = useQuery({
     queryKey: [queryKey],
     queryFn: () => {
-      return getIdeas(
-        gql`
-          {
-            ${queryName} {
-              id
-              title
-              body
-              createdAt
-              user {
-                id
-                name
-              }
-            }
-          }
-        `,
-        toast
-      )
+      return getIdeas(null, toast, queryName)
     },
   })
 
@@ -38,7 +22,7 @@ export default function IdeaList({ queryKey, queryName }) {
     <div className="flex flex-col items-center gap-5">
       {isPending ? (
         <Loader2 />
-      ) : ideas.length === 0 ? (
+      ) : isSuccess && ideas?.length === 0 ? (
         "No Ideas Found"
       ) : (
         ideas?.map((idea) => <Idea key={idea.id} idea={idea} />)

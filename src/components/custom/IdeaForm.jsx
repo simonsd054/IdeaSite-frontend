@@ -5,7 +5,7 @@ import { Button } from "@/components/ui/button"
 import FormInput from "./form/FormInput"
 import FormTextArea from "./form/FormTextArea"
 
-export default function IdeaForm({ prevValues = {}, onSubmit }) {
+export default function IdeaForm({ prevValues = {}, onSubmit, isEdit }) {
   const {
     register,
     handleSubmit,
@@ -43,7 +43,7 @@ export default function IdeaForm({ prevValues = {}, onSubmit }) {
         />
 
         <Button disabled={isSubmitting} type="submit">
-          Post Idea
+          {isEdit ? "Edit Post" : "Post Idea"}
         </Button>
       </form>
     </div>

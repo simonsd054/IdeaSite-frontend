@@ -26,6 +26,7 @@ import { useToast } from "@/components/ui/use-toast"
 import { deleteIdea } from "@/apis/idea"
 import { graphqlError } from "@/utils/error"
 import { useGlobalContext } from "@/utils/reducer"
+import { Link } from "react-router-dom"
 
 export default function Idea({
   idea: {
@@ -53,6 +54,7 @@ export default function Idea({
     },
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ["ideas"] })
+      queryClient.invalidateQueries({ queryKey: ["myIdeas"] })
     },
   })
 
@@ -91,9 +93,11 @@ export default function Idea({
       </CardContent>
       {store?.user?.id === userId && (
         <CardFooter className="flex justify-around">
-          <Button variant="outline">
-            <EditIcon className="mr-2 h-4 w-4" /> Edit
-          </Button>
+          <Link to={`/ideas/${id}/edit`}>
+            <Button variant="outline">
+              <EditIcon className="mr-2 h-4 w-4" /> Edit
+            </Button>
+          </Link>
           <AlertDialog>
             <AlertDialogTrigger asChild>
               <Button variant="outline">

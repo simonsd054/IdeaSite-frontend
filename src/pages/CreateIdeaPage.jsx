@@ -40,5 +40,10 @@ export default function CreateIdeaPage() {
     }
   }
 
-  return <IdeaForm onSubmit={onSubmit} />
+  return (
+    <>
+      <h2 className="text-3xl font-bold text-center mb-10">Post Idea</h2>
+      <IdeaForm onSubmit={onSubmit} />
+    </>
+  )
 }

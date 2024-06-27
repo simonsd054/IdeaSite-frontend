@@ -13,6 +13,7 @@ import {
   HomePage,
   Login,
   MyIdeasPage,
+  EditIdeaPage,
 } from "./pages"
 import ProtectedRoute from "./components/custom/ProtectedRoute.jsx"
 
@@ -42,6 +43,10 @@ const router = createBrowserRouter([
           {
             path: "/ideas/create",
             element: <CreateIdeaPage />,
+          },
+          {
+            path: "/ideas/:id/edit",
+            element: <EditIdeaPage />,
           },
           {
             path: "/my-ideas",
