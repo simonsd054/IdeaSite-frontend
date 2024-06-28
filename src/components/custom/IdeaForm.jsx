@@ -1,4 +1,5 @@
 import { useForm } from "react-hook-form"
+import { Loader2 } from "lucide-react"
 
 import { Button } from "@/components/ui/button"
 
@@ -43,6 +44,7 @@ export default function IdeaForm({ prevValues = {}, onSubmit, isEdit }) {
         />
 
         <Button disabled={isSubmitting} type="submit">
+          {isSubmitting && <Loader2 className="mr-2 h-4 w-4 animate-spin" />}
           {isEdit ? "Edit Post" : "Post Idea"}
         </Button>
       </form>

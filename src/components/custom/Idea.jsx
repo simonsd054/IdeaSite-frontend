@@ -1,4 +1,6 @@
-import { EditIcon, Trash } from "lucide-react"
+import { useState } from "react"
+import { Link } from "react-router-dom"
+import { EditIcon, Loader2, Trash } from "lucide-react"
 import { useMutation, useQueryClient } from "@tanstack/react-query"
 
 import {
@@ -12,7 +14,6 @@ import {
 import { Button } from "@/components/ui/button"
 import {
   AlertDialog,
-  AlertDialogAction,
   AlertDialogCancel,
   AlertDialogContent,
   AlertDialogDescription,
@@ -26,7 +27,6 @@ import { useToast } from "@/components/ui/use-toast"
 import { deleteIdea } from "@/apis/idea"
 import { graphqlError } from "@/utils/error"
 import { useGlobalContext } from "@/utils/reducer"
-import { Link } from "react-router-dom"
 
 export default function Idea({
   idea: {
@@ -43,6 +43,8 @@ export default function Idea({
     timeStyle: "short",
     timeZone: "Australia/Sydney",
   })
+
+  const [open, setOpen] = useState(false)
 
   const { store } = useGlobalContext()
 
@@ -73,6 +75,7 @@ export default function Idea({
           title: "Idea Deleted",
         })
       }
+      setOpen(false)
     } catch (err) {
       console.log(err)
       toast({
@@ -98,7 +101,7 @@ export default function Idea({
               <EditIcon className="mr-2 h-4 w-4" /> Edit
             </Button>
           </Link>
-          <AlertDialog>
+          <AlertDialog open={open} onOpenChange={setOpen}>
             <AlertDialogTrigger asChild>
               <Button variant="outline">
                 <Trash className="mr-2 h-4 w-4" />
@@ -116,9 +119,15 @@ export default function Idea({
                 </AlertDialogDescription>
               </AlertDialogHeader>
               <AlertDialogFooter>
-                <AlertDialogAction onClick={onClickDelete}>
+                <Button
+                  disabled={deleteIdeaMutation.isPending}
+                  onClick={onClickDelete}
+                >
+                  {deleteIdeaMutation.isPending && (
+                    <Loader2 className="mr-2 h-4 w-4 animate-spin" />
+                  )}
                   Yes
-                </AlertDialogAction>
+                </Button>
                 <AlertDialogCancel>Cancel</AlertDialogCancel>
               </AlertDialogFooter>
             </AlertDialogContent>

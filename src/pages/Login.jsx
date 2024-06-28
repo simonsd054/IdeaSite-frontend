@@ -1,6 +1,7 @@
 import { useNavigate } from "react-router"
 import { useForm } from "react-hook-form"
 import { useMutation } from "@tanstack/react-query"
+import { Loader2 } from "lucide-react"
 
 import { Button } from "@/components/ui/button"
 import FormInput from "@/components/custom/form/FormInput"
@@ -101,6 +102,7 @@ export default function Login() {
         />
 
         <Button disabled={isSubmitting} type="submit">
+          {isSubmitting && <Loader2 className="mr-2 h-4 w-4 animate-spin" />}
           Login
         </Button>
       </form>
